@@ -1,20 +1,45 @@
+import { Inter_900Black, useFonts } from '@expo-google-fonts/inter';
+import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { RecoilRoot } from 'recoil';
+import WatchListProvider from './src/contexts/WatchListContext';
+import Navigation from './src/navigation';
+
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+    LeagueGothic: require('./assets/fonts/LeagueGothic-Regular.otf')
+  })
+
+  if (!fontsLoaded) {
+    return <ActivityIndicator size={'large'} />
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer theme={{
+      colors: {
+        background: '#121212'
+      }
+    }}>
+      <RecoilRoot>
+        <WatchListProvider>
+          <View style={styles.container}>
+            <Navigation />
+            <StatusBar style="light" />
+          </View>
+        </WatchListProvider>
+      </RecoilRoot>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#121212',
+    paddingTop: 50,
   },
 });
